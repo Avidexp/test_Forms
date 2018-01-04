@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import {PanelGroup, Panel, Button} from "react-bootstrap";
+import {PanelGroup, Panel, Button, Alert} from "react-bootstrap";
 
 
 
@@ -39,10 +38,10 @@ class App extends Component {
   
  
 componentWillReceiveProps(props){
-  console.log(props);
+  //console.log(props);
 }
 componentWillUpdate(props){
-  console.log(props);
+  //console.log(props);
 }
 
 formSubmit(event) {
@@ -52,12 +51,14 @@ formSubmit(event) {
     ShipDate = document.getElementById("shipDate").value,
     DeliveryDate = document.getElementById("deliveryDate").value;
 
-    console.log(CustomerName);
-    console.log(ShipmentNumber);
-    console.log(TotalCharge);
-    console.log(ShipDate);
-    console.log(DeliveryDate);
-    
+    // Date Conversion
+    ShipDate = new Date(ShipDate);
+    DeliveryDate = new Date(DeliveryDate);
+    ShipDate = ShipDate.toISOString();
+    DeliveryDate = DeliveryDate.toISOString();
+
+
+
     this.setState({
       ShipmentNumber: ShipmentNumber,
       CustomerName: CustomerName,
@@ -107,37 +108,38 @@ formSubmit(event) {
     //Destination
 
 
-    // let DestinationCompanyName = document.getElementById("DeliveryCompanyName").value,
-    // DestinationAddress1 = document.getElementById("DestinationAddress1").value,
-    // DestinationAddress2 = document.getElementById("DestinationAddress2").value,
-    // DestinationCity = document.getElementById("DestinationCity").value,
-    // DestinationStateCode = document.getElementById("DestinationStateCode").value,
-    // DestinationPostalCode = document.getElementById("DestinationPostalCode").value,
-    // DestinationCountry = document.getElementById("DestinationCountry").value,
-    // DestinationFirstName = document.getElementById("DestinationFirstName").value,
-    // DestinationLastName = document.getElementById("DestinationFLastName").value,
-    // DestinationPhone = document.getElementById("DestinationPhone").value,
-    // DestinationEmail = document.getElementById("DestinationEmail").value;
+    let DestinationCompanyName = document.getElementById("Destination_CompanyName").value,
+    DestinationAddress1 = document.getElementById("Destination_Address1").value,
+    DestinationAddress2 = document.getElementById("Destination_Address2").value,
+    DestinationCity = document.getElementById("Destination_City").value,
+    DestinationStateCode = document.getElementById("Destination_StateCode").value,
+    DestinationPostalCode = document.getElementById("Destination_PostalCode").value,
+    DestinationCountry = document.getElementById("Destination_Country").value,
+    DestinationFirstName = document.getElementById("DestinationFirstName").value,
+    DestinationLastName = document.getElementById("DestinationLastName").value,
+    DestinationPhone = document.getElementById("DestinationPhone").value,
+    DestinationEmail = document.getElementById("DestinationEmail").value;
 
-    // this.setState({
-    //   destination:{
-    //     address: {
-    //       CompanyName: DestinationCompanyName,
-    //       Address1: DestinationAddress1,
-    //       Address2: DestinationAddress2,
-    //       City: DestinationCity,
-    //       StateCode: DestinationStateCode,
-    //       PostalCode: DestinationPostalCode,
-    //       Country: DestinationCountry
-    //     },
-    //     contact: {
-    //       FirstName: DestinationFirstName,
-    //       LastName: DestinationLastName,
-    //       Phone: DestinationPhone,
-    //       Email: DestinationEmail
-    //     }
-    //   }
-    // })
+    this.setState({
+      destination:{
+        address: {
+          CompanyName: DestinationCompanyName,
+          Address1: DestinationAddress1,
+          Address2: DestinationAddress2,
+          City: DestinationCity,
+          StateCode: DestinationStateCode,
+          PostalCode: DestinationPostalCode,
+          Country: DestinationCountry
+        },
+        contact: {
+          FirstName: DestinationFirstName,
+          LastName: DestinationLastName,
+          Phone: DestinationPhone,
+          Email: DestinationEmail
+        }, 
+        referenceNumbers: this.state.destination.referenceNumbers
+      }
+    })
 
 
 
@@ -203,21 +205,12 @@ handleNewItem(event) {
       pallets =document.getElementById("pallets").value,
       isHazardous = document.getElementById("isHazardous").value;
 
-      console.log(description);
-      console.log(length);
-      console.log(height);
-      console.log(width);
-      console.log(freightClass);
-      console.log(totalWeight);
-      console.log(pieces);
-      console.log(pallets);
-      console.log(isHazardous);
 let item = {description, length, width, height, freightClass, totalWeight, pieces,pallets, isHazardous};
 
 
 this.setState({items:[...this.state.items, item]});
-console.log("ENTIRE EVENT RESPONSE : ");
- console.log(this.state);
+
+
   
 };
 
@@ -230,16 +223,11 @@ handleNewCharge(event) {
       ChargesDescription = document.getElementById("ChargesDescription").value,
       ChargesAmount = document.getElementById("ChargesAmount").value;
 
-      console.log(ChargesCode);
-      console.log(ChargesDescription);
-      console.log(ChargesAmount);
-
 let charge = {ChargesCode, ChargesDescription, ChargesAmount};
 
 
 this.setState({charges:[...this.state.charges, charge]});
-console.log("RESULT FROM HANDLE CHANGE : ");
- console.log(this.state);
+
   
 };
 
@@ -249,11 +237,6 @@ handleNewBillToReference(event){
   let BillToReferenceCode = document.getElementById("BillToReferenceCode").value,
   BillToReferenceDescription = document.getElementById("BillToReferenceDescription").value,
   BillToReferenceValue = document.getElementById("BillToReferenceValue").value;
-
-
-      console.log(BillToReferenceCode);
-      console.log(BillToReferenceDescription);
-      console.log(BillToReferenceValue);
 
       let refObject = {BillToReferenceCode, BillToReferenceDescription, BillToReferenceValue};
 
@@ -269,7 +252,7 @@ handleNewBillToReference(event){
         } 
           });
 
-      console.log(this.state);
+ 
 }
 
 
@@ -277,11 +260,6 @@ handleMainReference(event){
   let AdditionalReferenceCode = document.getElementById("AdditionalReferenceCode").value,
   AdditionalReferenceDescription = document.getElementById("AdditionalReferenceDescription").value,
   AdditionalReferenceValue = document.getElementById("AdditionalReferenceValue").value;
-
-
-      console.log(AdditionalReferenceCode);
-      console.log(AdditionalReferenceDescription);
-      console.log(AdditionalReferenceValue);
 
       let refObject = {AdditionalReferenceCode, AdditionalReferenceDescription, AdditionalReferenceValue};
 
@@ -293,7 +271,6 @@ handleMainReference(event){
               ] 
           });
 
-      console.log(this.state);
 }
 
 handleNewOriginReference(event){
@@ -322,6 +299,15 @@ handleNewOriginReference(event){
 
       console.log(this.state);
 }
+
+
+// handleAlertDismiss(event) {
+//   this.setState({alertVisible: false});
+// }
+
+// handleAlertShow(event) {
+//   this.setState({alertVisible: true});
+// }
 
 handleNewDestinationReference(event){
   let DestinationReferenceNumberCode = document.getElementById("DestinationReferenceNumberCode").value,
@@ -359,17 +345,12 @@ handleNewAccessorials(event) {
       AccessorialAmount = document.getElementById("AccessorialAmount").value,
       AccessorialCode = document.getElementById("AccessorialCode").value;
 
-      console.log(AccessorialDirection);
-      console.log(AccessorialDescription);
-      console.log(AccessorialAmount);
-      console.log(AccessorialCode);
 
 let accessorial = {AccessorialCode, AccessorialDirection, AccessorialDescription, AccessorialAmount};
 
 
 this.setState({accessorials:[...this.state.accessorials, accessorial]});
-console.log("RESULT FROM HANDLE CHANGE : ");
- console.log(this.state);
+
   
 };
   render() {
@@ -434,6 +415,7 @@ console.log("RESULT FROM HANDLE CHANGE : ");
  <div>
       <h4>Items:</h4>
       <table>
+      <thead>
       <tr>
       <th>Description</th>
       <th>Length</th>
@@ -445,6 +427,7 @@ console.log("RESULT FROM HANDLE CHANGE : ");
       <th>Pallets</th>
       <th>isHazardous</th>
       </tr>
+      </thead>
       <tbody>
       {this.state.items.map(item => { 
         return(
@@ -486,13 +469,16 @@ console.log("RESULT FROM HANDLE CHANGE : ");
 
  {this.state.charges.length > 0 ?
  <div>
-      <h4>Items:</h4>
+      <h4>Charges:</h4>
       <table>
+      <thead>
       <tr>
       <th>Code</th>
       <th>Description</th>
       <th>Amount</th>
       </tr>
+      </thead>
+      <tbody>
       {this.state.charges.map(item => { 
         return(
         <tr>
@@ -501,6 +487,7 @@ console.log("RESULT FROM HANDLE CHANGE : ");
         <td>{item.ChargesAmount}</td>
         </tr>);
       })}
+      </tbody>
       </table>
       </div>
     : <p></p>
@@ -529,12 +516,15 @@ console.log("RESULT FROM HANDLE CHANGE : ");
  <div>
       <h4>Accessorials:</h4>
       <table>
+      <thead>
       <tr>
       <th>Code</th>
       <th>Direction</th>
       <th>Description</th>
       <th>Amount</th>
       </tr>
+      </thead>
+      <tbody>
       {this.state.accessorials.map(item => { 
         return(
         <tr>
@@ -544,6 +534,7 @@ console.log("RESULT FROM HANDLE CHANGE : ");
         <td>{item.AccessorialAmount}</td>
         </tr>);
       })}
+      </tbody>
       </table>
       </div>
     : <p></p>
@@ -612,11 +603,14 @@ console.log("RESULT FROM HANDLE CHANGE : ");
  <div>
       <h4>Reference Numbers:</h4>
       <table>
+      <thead>
       <tr>
       <th>Code</th>
       <th>Description</th>
       <th>Value</th>
       </tr>
+      </thead>
+      <tbody>
       {this.state.origin.referenceNumbers.map(item => { 
         return(
         <tr>
@@ -625,6 +619,7 @@ console.log("RESULT FROM HANDLE CHANGE : ");
         <td>{item.ReferenceValue}</td>
         </tr>);
       })}
+      </tbody>
       </table>
       </div>
     : <p></p>
@@ -640,25 +635,25 @@ console.log("RESULT FROM HANDLE CHANGE : ");
      <h3>Address</h3><br/>
      <br/>
      <label >Company Name</label>
-     <input type="text" id="DeliveryCompanyName" name="DestinationCompanyName" placeholder="Company Name"/>
+     <input type="text" id="Destination_CompanyName" name="DestinationCompanyName" placeholder="Company Name"/>
 
      <label >Address 1</label>
-     <input type="text" id="DestinationAddress1" name="DestinationAddress1" placeholder="Address 1"/>
+     <input type="text" id="Destination_Address1" name="DestinationAddress1" placeholder="Address 1"/>
 
      <label >Address 2</label>
-     <input type="text" id="DestinationAddress2" name="DestinationAddress2" placeholder="Address 2"/>
+     <input type="text" id="Destination_Address2" name="DestinationAddress2" placeholder="Address 2"/>
  
      <label >City</label>
-     <input type="text" id="DestinationCity" name="DestinationCity" placeholder="City"/>
+     <input type="text" id="Destination_City" name="DestinationCity" placeholder="City"/>
    
      <label >State Code</label>
-     <input type="text" id="DestinationStateCode" name="DestinationStateCode" placeholder="State Code"/>
+     <input type="text" id="Destination_StateCode" name="DestinationStateCode" placeholder="State Code"/>
 
      <label>Postal Code</label> 
-     <input type="text" id="DestinationPostalCode" name="DestinationPostalCode" placeholder="Postal Code"/>
+     <input type="text" id="Destination_PostalCode" name="DestinationPostalCode" placeholder="Postal Code"/>
  
      <label >Country</label>
-     <input type="text" id="DestinationCountry" name="DestinationCountry" placeholder="Country"/>
+     <input type="text" id="Destination_Country" name="DestinationCountry" placeholder="Country"/>
 
 
       <br/>
@@ -691,11 +686,14 @@ console.log("RESULT FROM HANDLE CHANGE : ");
  <div>
       <h4>Reference Numbers:</h4>
       <table>
+      <thead>
       <tr>
       <th>Code</th>
       <th>Description</th>
       <th>Value</th>
       </tr>
+      </thead>
+      <tbody>
       {this.state.destination.referenceNumbers.map(item => { 
         return(
         <tr>
@@ -704,6 +702,7 @@ console.log("RESULT FROM HANDLE CHANGE : ");
         <td>{item.DestinationReferenceNumberValue}</td>
         </tr>);
       })}
+      </tbody>
       </table>
       </div>
     : <p></p>
@@ -770,11 +769,14 @@ console.log("RESULT FROM HANDLE CHANGE : ");
  <div>
       <h4>Reference Numbers:</h4>
       <table>
+      <thead>
       <tr>
       <th>Code</th>
       <th>Description</th>
       <th>Value</th>
       </tr>
+      </thead>
+      <tbody>
       {this.state.billTo.referenceNumbers.map(item => { 
         return(
         <tr>
@@ -783,6 +785,7 @@ console.log("RESULT FROM HANDLE CHANGE : ");
         <td>{item.BillToReferenceValue}</td>
         </tr>);
       })}
+      </tbody>
       </table>
       </div>
     : <p></p>
@@ -838,6 +841,24 @@ console.log("RESULT FROM HANDLE CHANGE : ");
 
 
 </div>
+{/* <div style={{"float": "left"}}>  <Button onClick={this.handleAlertShow(this)}>Show Alert</Button> */}
+
+{/* {alert == true ?
+  
+        <Alert bsStyle="info" onDismiss={() => this.handleAlertDismiss(this)}>
+          <h4>Oh snap! You got an error!</h4>
+          <p>Change this and that and try again. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum.</p>
+          <p>
+            <Button bsStyle="danger">Take this action</Button>
+            <span> or </span>
+            <Button onClick={() => this.handleAlertDismiss(this)}>Hide Alert</Button>
+          </p>
+        </Alert>
+       : <p></p>
+    } */}
+
+
+
       </div>
     );
   }
