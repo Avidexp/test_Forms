@@ -10,6 +10,11 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
+      ShipmentNumber: "",
+      CustomerName: "",
+      TotalCharge: 0,
+      ShipDate: "",
+      DeliveryDate: "",
       items: [],
       charges: [],
       accessorials: [],
@@ -33,13 +38,151 @@ class App extends Component {
   }
   
  
+componentWillReceiveProps(props){
+  console.log(props);
+}
+componentWillUpdate(props){
+  console.log(props);
+}
+
+formSubmit(event) {
+    let CustomerName = document.getElementById("customerName").value,
+    ShipmentNumber = document.getElementById("shipmentNumber").value,
+    TotalCharge = document.getElementById("totalCharge").value,
+    ShipDate = document.getElementById("shipDate").value,
+    DeliveryDate = document.getElementById("deliveryDate").value;
+
+    console.log(CustomerName);
+    console.log(ShipmentNumber);
+    console.log(TotalCharge);
+    console.log(ShipDate);
+    console.log(DeliveryDate);
+    
+    this.setState({
+      ShipmentNumber: ShipmentNumber,
+      CustomerName: CustomerName,
+      TotalCharge: TotalCharge,
+      ShipDate: ShipDate,
+      DeliveryDate: DeliveryDate,
+    });
+
+
+    //Origin
+
+    let OriginCompanyName = document.getElementById("OriginCompanyName").value,
+    OriginAddress1 = document.getElementById("OriginAddress1").value,
+    OriginAddress2 = document.getElementById("OriginAddress2").value,
+    OriginCity = document.getElementById("OriginCity").value,
+    OriginState = document.getElementById("OriginStateCode").value,
+    OriginPostalCode = document.getElementById("OriginPostalCode").value,
+    OriginCountry = document.getElementById("OriginCountry").value,
+    OriginContactFirstName = document.getElementById("OriginContactFirstName").value,
+    OriginContactLastName = document.getElementById("OriginContactLastName").value,
+    OriginContactPhone = document.getElementById("OriginContactPhone").value,
+    OriginContactEmail = document.getElementById("OriginContactEmail").value;
+
+
+    this.setState({
+      origin: {
+        address: {
+          CompanyName: OriginCompanyName,
+          Address1: OriginAddress1,
+          Address2: OriginAddress2,
+          City: OriginCity,
+          StateCode: OriginState,
+          PostalCode: OriginPostalCode,
+          Country: OriginCountry
+        },
+        Contact:{
+          FirstName: OriginContactFirstName,
+          LastName: OriginContactLastName,
+          Phone: OriginContactPhone,
+          Email: OriginContactEmail
+        },
+        referenceNumbers: [...this.state.origin.referenceNumbers]
+      }
+    });
+
+
+    //Destination
+
+
+    // let DestinationCompanyName = document.getElementById("DeliveryCompanyName").value,
+    // DestinationAddress1 = document.getElementById("DestinationAddress1").value,
+    // DestinationAddress2 = document.getElementById("DestinationAddress2").value,
+    // DestinationCity = document.getElementById("DestinationCity").value,
+    // DestinationStateCode = document.getElementById("DestinationStateCode").value,
+    // DestinationPostalCode = document.getElementById("DestinationPostalCode").value,
+    // DestinationCountry = document.getElementById("DestinationCountry").value,
+    // DestinationFirstName = document.getElementById("DestinationFirstName").value,
+    // DestinationLastName = document.getElementById("DestinationFLastName").value,
+    // DestinationPhone = document.getElementById("DestinationPhone").value,
+    // DestinationEmail = document.getElementById("DestinationEmail").value;
+
+    // this.setState({
+    //   destination:{
+    //     address: {
+    //       CompanyName: DestinationCompanyName,
+    //       Address1: DestinationAddress1,
+    //       Address2: DestinationAddress2,
+    //       City: DestinationCity,
+    //       StateCode: DestinationStateCode,
+    //       PostalCode: DestinationPostalCode,
+    //       Country: DestinationCountry
+    //     },
+    //     contact: {
+    //       FirstName: DestinationFirstName,
+    //       LastName: DestinationLastName,
+    //       Phone: DestinationPhone,
+    //       Email: DestinationEmail
+    //     }
+    //   }
+    // })
 
 
 
-  formSubmit(event) {
-    if(event && event.preventDefault){
-      event.preventDefault();
-    }
+    // BillTo
+
+    let BillToCompanyName = document.getElementById("BillToCompanyName").value,
+    BillToAddress1 = document.getElementById("BillToAddress1").value,
+    BillToAddress2 = document.getElementById("BillToAddress2").value,
+    BillToCity = document.getElementById("BillToCity").value,
+    BillToStateCode = document.getElementById("BillToStateCode").value,
+    BillToPostalCode =  document.getElementById("BillToPostalCode").value,
+    BillToCountry = document.getElementById("BillToCountry").value,
+    BillToFirstName = document.getElementById("BillToFirstName").value,
+    BillToLastName = document.getElementById("BillToLastName").value,
+    BillToPhone = document.getElementById("BillToPhone").value,
+    BillToEmail = document.getElementById("BillToEmail").value;
+
+
+    this.setState({
+      billTo:{
+        address:{
+          companyName: BillToCompanyName,
+          address1: BillToAddress1,
+          address2: BillToAddress2,
+          city: BillToCity,
+          stateCode: BillToStateCode,
+          postalCode: BillToPostalCode, 
+          country: BillToCountry
+        },
+        contact:{
+          FirstName: BillToFirstName,
+          LastName: BillToLastName,
+          Phone: BillToPhone,
+          Email: BillToEmail
+        },
+        referenceNumbers: [...this.state.billTo.referenceNumbers]
+      }
+    })
+
+    console.log("CURRENT STATE: ");
+    console.log(this.state);
+
+    let JSONObj = JSON.stringify(this.state);
+
+    console.log(JSONObj);
 
 };
 
@@ -57,7 +200,8 @@ handleNewItem(event) {
       freightClass =document.getElementById("freightClass").value,
       totalWeight =document.getElementById("totalWeightInPounds").value,
       pieces =document.getElementById("pieces").value,
-      pallets =document.getElementById("pallets").value;
+      pallets =document.getElementById("pallets").value,
+      isHazardous = document.getElementById("isHazardous").value;
 
       console.log(description);
       console.log(length);
@@ -67,7 +211,8 @@ handleNewItem(event) {
       console.log(totalWeight);
       console.log(pieces);
       console.log(pallets);
-let item = {description, length, width, height, freightClass, totalWeight, pieces,pallets};
+      console.log(isHazardous);
+let item = {description, length, width, height, freightClass, totalWeight, pieces,pallets, isHazardous};
 
 
 this.setState({items:[...this.state.items, item]});
@@ -98,6 +243,59 @@ console.log("RESULT FROM HANDLE CHANGE : ");
   
 };
 
+
+
+handleNewBillToReference(event){
+  let BillToReferenceCode = document.getElementById("BillToReferenceCode").value,
+  BillToReferenceDescription = document.getElementById("BillToReferenceDescription").value,
+  BillToReferenceValue = document.getElementById("BillToReferenceValue").value;
+
+
+      console.log(BillToReferenceCode);
+      console.log(BillToReferenceDescription);
+      console.log(BillToReferenceValue);
+
+      let refObject = {BillToReferenceCode, BillToReferenceDescription, BillToReferenceValue};
+
+
+      this.setState({billTo: 
+        {
+            address: {...this.state.billTo.address},
+            contact: {...this.state.billTo.contact}, 
+            referenceNumbers: [
+                ...this.state.billTo.referenceNumbers, 
+                refObject 
+              ] 
+        } 
+          });
+
+      console.log(this.state);
+}
+
+
+handleMainReference(event){
+  let AdditionalReferenceCode = document.getElementById("AdditionalReferenceCode").value,
+  AdditionalReferenceDescription = document.getElementById("AdditionalReferenceDescription").value,
+  AdditionalReferenceValue = document.getElementById("AdditionalReferenceValue").value;
+
+
+      console.log(AdditionalReferenceCode);
+      console.log(AdditionalReferenceDescription);
+      console.log(AdditionalReferenceValue);
+
+      let refObject = {AdditionalReferenceCode, AdditionalReferenceDescription, AdditionalReferenceValue};
+
+
+      this.setState({
+            referenceNumbers: [
+                ...this.state.referenceNumbers, 
+                refObject 
+              ] 
+          });
+
+      console.log(this.state);
+}
+
 handleNewOriginReference(event){
   let ReferenceCode = document.getElementById("OriginReferenceNumberCode").value,
       ReferenceDescription = document.getElementById("OriginReferenceNumberDescription").value,
@@ -111,11 +309,46 @@ handleNewOriginReference(event){
       let refObject = {ReferenceCode, ReferenceDescription, ReferenceValue};
 
 
-      this.setState({origin: {address: {...this.state.origin.address},contact: {...this.state.origin.contact}, referenceNumbers: [{...this.state.origin.referenceNumbers},refObject ] } });
+      this.setState({origin: 
+        {
+            address: {...this.state.origin.address},
+            contact: {...this.state.origin.contact}, 
+            referenceNumbers: [
+                ...this.state.origin.referenceNumbers, 
+                refObject 
+              ] 
+        } 
+          });
 
       console.log(this.state);
 }
 
+handleNewDestinationReference(event){
+  let DestinationReferenceNumberCode = document.getElementById("DestinationReferenceNumberCode").value,
+  DestinationReferenceNumberDescription = document.getElementById("DestinationReferenceNumberDescription").value,
+  DestinationReferenceNumberValue = document.getElementById("DestinationReferenceNumberValue").value;
+
+
+      console.log(DestinationReferenceNumberCode);
+      console.log(DestinationReferenceNumberDescription);
+      console.log(DestinationReferenceNumberValue);
+
+      let refObject = {DestinationReferenceNumberCode, DestinationReferenceNumberDescription, DestinationReferenceNumberValue};
+
+
+      this.setState({destination: 
+        {
+            address: {...this.state.destination.address},
+            contact: {...this.state.destination.contact}, 
+            referenceNumbers: [
+                ...this.state.destination.referenceNumbers, 
+                refObject 
+              ] 
+        } 
+          });
+
+      console.log(this.state);
+}
 handleNewAccessorials(event) {
 
   console.log("ADD NEW ITEM");
@@ -210,7 +443,9 @@ console.log("RESULT FROM HANDLE CHANGE : ");
       <th>Total Weight (pounds)</th>
       <th>Pieces</th>
       <th>Pallets</th>
+      <th>isHazardous</th>
       </tr>
+      <tbody>
       {this.state.items.map(item => { 
         return(
         <tr>
@@ -223,8 +458,10 @@ console.log("RESULT FROM HANDLE CHANGE : ");
         <td>{item.totalWeight}</td>
         <td>{item.pieces}</td>
         <td>{item.pallets}</td>
+        <td>{item.isHazardous}</td>
         </tr>);
       })}
+      </tbody>
       </table>
       </div>
     : <p></p>
@@ -323,53 +560,76 @@ console.log("RESULT FROM HANDLE CHANGE : ");
      <h3>Address</h3><br/>
      <br/>
      <label >Company Name</label>
-     <input type="text" id="DeliveryCompanyName" name="CompanyName" placeholder="Company Name"/>
+     <input type="text" id="OriginCompanyName" name="CompanyName" placeholder="Company Name"/>
 
      <label >Address 1</label>
-     <input type="text" id="DeliveryAddress1" name="Address1" placeholder="Address 1"/>
+     <input type="text" id="OriginAddress1" name="Address1" placeholder="Address 1"/>
 
      <label >Address 2</label>
-     <input type="text" id="DeliveryAddress2" name="Address2" placeholder="Address 2"/>
+     <input type="text" id="OriginAddress2" name="Address2" placeholder="Address 2"/>
  
      <label >City</label>
-     <input type="text" id="DeliveryCity" name="City" placeholder="City"/>
+     <input type="text" id="OriginCity" name="City" placeholder="City"/>
    
      <label >State Code</label>
-     <input type="text" id="DeliveryStateCode" name="StateCode" placeholder="State Code"/>
+     <input type="text" id="OriginStateCode" name="StateCode" placeholder="State Code"/>
 
      <label>Postal Code</label> 
-     <input type="text" id="DeliveryPostalCode" name="PostalCode" placeholder="Postal Code"/>
+     <input type="text" id="OriginPostalCode" name="PostalCode" placeholder="Postal Code"/>
  
      <label >Country</label>
-     <input type="text" id="DeliveryCountry" name="Country" placeholder="Country"/>
+     <input type="text" id="OriginCountry" name="Country" placeholder="Country"/>
 
 
       <br/>
       <h3>Contact </h3>
       <label >FirstName</label>
-     <input type="text" id="FirstName" name="FirstName" placeholder="First Name"/>
+     <input type="text" id="OriginContactFirstName" name="FirstName" placeholder="First Name"/>
 
      <label >Last Name</label>
-     <input type="text" id="LastName" name="LastName" placeholder="Last Name"/>
+     <input type="text" id="OriginContactLastName" name="LastName" placeholder="Last Name"/>
 
      <label >Phone</label>
-     <input type="text" id="Phone" name="Phone" placeholder="Phone"/>
+     <input type="text" id="OriginContactPhone" name="Phone" placeholder="Phone"/>
  
      <label >Email</label>
-     <input type="text" id="Email" name="Email" placeholder="Email"/>
+     <input type="text" id="OriginContactEmail" name="Email" placeholder="Email"/>
      <br/>
-     <Panel header="iderence Numbers" bsStyle="info">
+     <Panel header="Reference Numbers" bsStyle="info">
 
      <label >Code</label>
-      <input type="text" id="Code" name="Code" placeholder="Code"/>
+      <input type="text" id="OriginReferenceNumberCode" name="OriginReferenceNumberCode" placeholder="Code"/>
  
       <label>Description</label>
-      <input type="text" id="iderenceNumbersDescription" name="iderenceNumbersDescription" placeholder="Description"/>
+      <input type="text" id="OriginReferenceNumberDescription" name="iderenceNumbersDescription" placeholder="Description"/>
  
       <label >Value</label>
-      <input type="text" id="iderenceNumberValue" name="iderenceNumberValue" placeholder="Value"/>
+      <input type="text" id="OriginReferenceNumberValue" name="OriginReferenceNumberValue" placeholder="Value"/>
 
-      <button style={{"color":"white", "backgroundColor": "green", "fontSize": "20px"}}>+</button>
+
+
+      {this.state.origin.referenceNumbers.length > 0 ?
+ <div>
+      <h4>Reference Numbers:</h4>
+      <table>
+      <tr>
+      <th>Code</th>
+      <th>Description</th>
+      <th>Value</th>
+      </tr>
+      {this.state.origin.referenceNumbers.map(item => { 
+        return(
+        <tr>
+        <td>{item.ReferenceCode}</td>
+          <td>{item.ReferenceDescription}</td>
+        <td>{item.ReferenceValue}</td>
+        </tr>);
+      })}
+      </table>
+      </div>
+    : <p></p>
+ }
+      <button style={{"color":"white", "backgroundColor": "green", "fontSize": "20px"}} onClick={() => this.handleNewOriginReference(this)}>+</button>
     </Panel>
      
 
@@ -380,53 +640,76 @@ console.log("RESULT FROM HANDLE CHANGE : ");
      <h3>Address</h3><br/>
      <br/>
      <label >Company Name</label>
-     <input type="text" id="DeliveryCompanyName" name="CompanyName" placeholder="Company Name"/>
+     <input type="text" id="DeliveryCompanyName" name="DestinationCompanyName" placeholder="Company Name"/>
 
      <label >Address 1</label>
-     <input type="text" id="DeliveryAddress1" name="Address1" placeholder="Address 1"/>
+     <input type="text" id="DestinationAddress1" name="DestinationAddress1" placeholder="Address 1"/>
 
      <label >Address 2</label>
-     <input type="text" id="DeliveryAddress2" name="Address2" placeholder="Address 2"/>
+     <input type="text" id="DestinationAddress2" name="DestinationAddress2" placeholder="Address 2"/>
  
      <label >City</label>
-     <input type="text" id="DeliveryCity" name="City" placeholder="City"/>
+     <input type="text" id="DestinationCity" name="DestinationCity" placeholder="City"/>
    
      <label >State Code</label>
-     <input type="text" id="DeliveryStateCode" name="StateCode" placeholder="State Code"/>
+     <input type="text" id="DestinationStateCode" name="DestinationStateCode" placeholder="State Code"/>
 
      <label>Postal Code</label> 
-     <input type="text" id="DeliveryPostalCode" name="PostalCode" placeholder="Postal Code"/>
+     <input type="text" id="DestinationPostalCode" name="DestinationPostalCode" placeholder="Postal Code"/>
  
      <label >Country</label>
-     <input type="text" id="DeliveryCountry" name="Country" placeholder="Country"/>
+     <input type="text" id="DestinationCountry" name="DestinationCountry" placeholder="Country"/>
 
 
       <br/>
       <h3>Contact </h3>
       <label >FirstName</label>
-     <input type="text" id="FirstName" name="FirstName" placeholder="First Name"/>
+     <input type="text" id="DestinationFirstName" name="DestinationFirstName" placeholder="First Name"/>
 
      <label >Last Name</label>
-     <input type="text" id="LastName" name="LastName" placeholder="Last Name"/>
+     <input type="text" id="DestinationLastName" name="DestinationLastName" placeholder="Last Name"/>
 
      <label >Phone</label>
-     <input type="text" id="Phone" name="Phone" placeholder="Phone"/>
+     <input type="text" id="DestinationPhone" name="DestinationPhone" placeholder="Phone"/>
  
      <label >Email</label>
-     <input type="text" id="Email" name="Email" placeholder="Email"/>
+     <input type="text" id="DestinationEmail" name="DestinationEmail" placeholder="Email"/>
      <br/>
-     <Panel header="iderence Numbers" bsStyle="info">
+     <Panel header="Reference Numbers" bsStyle="info">
 
      <label >Code</label>
-      <input type="text" id="OriginReferenceNumberCode" name="Code" placeholder="Code"/>
+      <input type="text" id="DestinationReferenceNumberCode" name="DestinationReferenceNumberCode" placeholder="Code"/>
  
       <label>Description</label>
-      <input type="text" id="OriginReferenceNumberDescription" name="iderenceNumbersDescription" placeholder="Description"/>
+      <input type="text" id="DestinationReferenceNumberDescription" name="DestinationReferenceNumberDescription" placeholder="Description"/>
  
       <label >Value</label>
-      <input type="text" id="OriginReferenceNumberValue" name="referenceNumberValue" placeholder="Value"/>
+      <input type="text" id="DestinationReferenceNumberValue" name="DestinationReferenceNumberValue" placeholder="Value"/>
 
-      <button style={{"color":"white", "backgroundColor": "green", "fontSize": "20px"}} onClick={() => this.handleNewOriginReference(this)}>+</button>
+
+      {this.state.destination.referenceNumbers.length > 0 ?
+ <div>
+      <h4>Reference Numbers:</h4>
+      <table>
+      <tr>
+      <th>Code</th>
+      <th>Description</th>
+      <th>Value</th>
+      </tr>
+      {this.state.destination.referenceNumbers.map(item => { 
+        return(
+        <tr>
+        <td>{item.DestinationReferenceNumberCode}</td>
+          <td>{item.DestinationReferenceNumberDescription}</td>
+        <td>{item.DestinationReferenceNumberValue}</td>
+        </tr>);
+      })}
+      </table>
+      </div>
+    : <p></p>
+ }
+
+      <button style={{"color":"white", "backgroundColor": "green", "fontSize": "20px"}} onClick={() => this.handleNewDestinationReference(this)}>+</button>
     </Panel>
      </Panel>
     <Panel collapsible header="BillTo" eventKey="5">
@@ -435,76 +718,125 @@ console.log("RESULT FROM HANDLE CHANGE : ");
     <h3>Address</h3><br/>
      <br/>
      <label >Company Name</label>
-     <input type="text" id="DeliveryCompanyName" name="CompanyName" placeholder="Company Name"/>
+     <input type="text" id="BillToCompanyName" name="CompanyName" placeholder="Company Name"/>
 
      <label >Address 1</label>
-     <input type="text" id="DeliveryAddress1" name="Address1" placeholder="Address 1"/>
+     <input type="text" id="BillToAddress1" name="Address1" placeholder="Address 1"/>
 
      <label >Address 2</label>
-     <input type="text" id="DeliveryAddress2" name="Address2" placeholder="Address 2"/>
+     <input type="text" id="BillToAddress2" name="Address2" placeholder="Address 2"/>
  
      <label >City</label>
-     <input type="text" id="DeliveryCity" name="City" placeholder="City"/>
+     <input type="text" id="BillToCity" name="City" placeholder="City"/>
    
      <label >State Code</label>
-     <input type="text" id="DeliveryStateCode" name="StateCode" placeholder="State Code"/>
+     <input type="text" id="BillToStateCode" name="StateCode" placeholder="State Code"/>
 
      <label>Postal Code</label> 
-     <input type="text" id="DeliveryPostalCode" name="PostalCode" placeholder="Postal Code"/>
+     <input type="text" id="BillToPostalCode" name="PostalCode" placeholder="Postal Code"/>
  
      <label >Country</label>
-     <input type="text" id="DeliveryCountry" name="Country" placeholder="Country"/>
+     <input type="text" id="BillToCountry" name="Country" placeholder="Country"/>
 
 
       <br/>
       <h3>Contact </h3>
       <label >FirstName</label>
-     <input type="text" id="FirstName" name="FirstName" placeholder="First Name"/>
+     <input type="text" id="BillToFirstName" name="FirstName" placeholder="First Name"/>
 
      <label >Last Name</label>
-     <input type="text" id="LastName" name="LastName" placeholder="Last Name"/>
+     <input type="text" id="BillToLastName" name="LastName" placeholder="Last Name"/>
 
      <label >Phone</label>
-     <input type="text" id="Phone" name="Phone" placeholder="Phone"/>
+     <input type="text" id="BillToPhone" name="Phone" placeholder="Phone"/>
  
      <label >Email</label>
-     <input type="text" id="Email" name="Email" placeholder="Email"/>
+     <input type="text" id="BillToEmail" name="Email" placeholder="Email"/>
      <br/>
-     <Panel header="iderence Numbers" bsStyle="info">
+     <Panel header="Reference Numbers" bsStyle="info">
 
      <label >Code</label>
-      <input type="text" id="Code" name="Code" placeholder="Code"/>
+      <input type="text" id="BillToReferenceCode" name="Code" placeholder="Code"/>
  
       <label>Description</label>
-      <input type="text" id="iderenceNumbersDescription" name="iderenceNumbersDescription" placeholder="Description"/>
+      <input type="text" id="BillToReferenceDescription" name="iderenceNumbersDescription" placeholder="Description"/>
  
       <label >Value</label>
-      <input type="text" id="iderenceNumberValue" name="iderenceNumberValue" placeholder="Value"/>
+      <input type="text" id="BillToReferenceValue" name="iderenceNumberValue" placeholder="Value"/>
 
-      <button style={{"color":"white", "backgroundColor": "green", "fontSize": "20px"}}>+</button>
+      <button style={{"color":"white", "backgroundColor": "green", "fontSize": "20px"}} onClick={() => this.handleNewBillToReference(this)}>+</button>
+    
+      {this.state.billTo.referenceNumbers.length > 0 ?
+ <div>
+      <h4>Reference Numbers:</h4>
+      <table>
+      <tr>
+      <th>Code</th>
+      <th>Description</th>
+      <th>Value</th>
+      </tr>
+      {this.state.billTo.referenceNumbers.map(item => { 
+        return(
+        <tr>
+        <td>{item.BillToReferenceCode}</td>
+          <td>{item.BillToReferenceDescription}</td>
+        <td>{item.BillToReferenceValue}</td>
+        </tr>);
+      })}
+      </table>
+      </div>
+    : <p></p>
+ }
     </Panel>
      <br/>
 
       </Panel>
-      <Panel collapsible header="Additional iderence Numbers" eventKey="6">
-      <Panel header="iderence Numbers" bsStyle="info">
+      <Panel collapsible header="Additional Reference Numbers" eventKey="6">
+      <Panel header="Reference Numbers" bsStyle="info">
 
      <label >Code</label>
-      <input type="text" id="Code" name="Code" placeholder="Code"/>
+      <input type="text" id="AdditionalReferenceCode" name="Code" placeholder="Code"/>
  
       <label>Description</label>
-      <input type="text" id="iderenceNumbersDescription" name="iderenceNumbersDescription" placeholder="Description"/>
+      <input type="text" id="AdditionalReferenceDescription" name="iderenceNumbersDescription" placeholder="Description"/>
  
       <label >Value</label>
-      <input type="text" id="iderenceNumberValue" name="iderenceNumberValue" placeholder="Value"/>
+      <input type="text" id="AdditionalReferenceValue" name="iderenceNumberValue" placeholder="Value"/>
 
-      <button style={{"color":"white", "backgroundColor": "green", "fontSize": "20px"}}>+</button>
+      <button style={{"color":"white", "backgroundColor": "green", "fontSize": "20px"}} onClick={() => this.handleMainReference(this)}>+</button>
+    
+      {this.state.referenceNumbers.length > 0 ?
+ <div>
+      <h4>Reference Numbers:</h4>
+      <table>
+      <thead>
+      <tr>
+      <th>Code</th>
+      <th>Description</th>
+      <th>Value</th>
+      </tr>
+      </thead>
+      <tbody>
+      {this.state.referenceNumbers.map(item => { 
+        return(
+        <tr>
+        <td>{item.AdditionalReferenceCode}</td>
+          <td>{item.AdditionalReferenceDescription}</td>
+        <td>{item.AdditionalReferenceValue}</td>
+        </tr>);
+      })}
+      </tbody>
+      </table>
+      </div>
+    : <p></p>
+ }
     </Panel>
       </Panel>
       </PanelGroup>
 
-    <button value="Submit" onClick={this.formSubmit(this)}>Submit!</button>
- 
+      <button style={{"width": "100%"}} value="Submit" onClick={() => this.formSubmit(this)}>Submit!</button>
+
+
 </div>
       </div>
     );
