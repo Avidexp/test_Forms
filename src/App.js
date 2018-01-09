@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import {PanelGroup, Panel, Button, Alert} from "react-bootstrap";
-
+import axios from 'axios';
 
 
 
@@ -9,12 +9,12 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
+      isError: false,
       ShipmentNumber: "",
       CustomerName: "",
       TotalCharge: 0,
       ShipDate: "",
       DeliveryDate: "",
-      items: [],
       charges: [],
       accessorials: [],
       origin: {
@@ -57,16 +57,7 @@ formSubmit(event) {
     ShipDate = ShipDate.toISOString();
     DeliveryDate = DeliveryDate.toISOString();
 
-
-
-    this.setState({
-      ShipmentNumber: ShipmentNumber,
-      CustomerName: CustomerName,
-      TotalCharge: TotalCharge,
-      ShipDate: ShipDate,
-      DeliveryDate: DeliveryDate,
-    });
-
+  
 
     //Origin
 
@@ -82,27 +73,6 @@ formSubmit(event) {
     OriginContactPhone = document.getElementById("OriginContactPhone").value,
     OriginContactEmail = document.getElementById("OriginContactEmail").value;
 
-
-    this.setState({
-      origin: {
-        address: {
-          CompanyName: OriginCompanyName,
-          Address1: OriginAddress1,
-          Address2: OriginAddress2,
-          City: OriginCity,
-          StateCode: OriginState,
-          PostalCode: OriginPostalCode,
-          Country: OriginCountry
-        },
-        Contact:{
-          FirstName: OriginContactFirstName,
-          LastName: OriginContactLastName,
-          Phone: OriginContactPhone,
-          Email: OriginContactEmail
-        },
-        referenceNumbers: [...this.state.origin.referenceNumbers]
-      }
-    });
 
 
     //Destination
@@ -120,7 +90,59 @@ formSubmit(event) {
     DestinationPhone = document.getElementById("DestinationPhone").value,
     DestinationEmail = document.getElementById("DestinationEmail").value;
 
+  // =============================
+  // Error Handling
+  // =============================
+
+    // if(isNaN(TotalCharge)){
+    //   this.setState({
+    //     isError: true
+    //   });
+    // }else {
+    //   this.setState({
+        
+    //   });
+  
+
+      // BillTo
+
+      let BillToCompanyName = document.getElementById("BillToCompanyName").value,
+      BillToAddress1 = document.getElementById("BillToAddress1").value,
+      BillToAddress2 = document.getElementById("BillToAddress2").value,
+      BillToCity = document.getElementById("BillToCity").value,
+      BillToStateCode = document.getElementById("BillToStateCode").value,
+      BillToPostalCode =  document.getElementById("BillToPostalCode").value,
+      BillToCountry = document.getElementById("BillToCountry").value,
+      BillToFirstName = document.getElementById("BillToFirstName").value,
+      BillToLastName = document.getElementById("BillToLastName").value,
+      BillToPhone = document.getElementById("BillToPhone").value,
+      BillToEmail = document.getElementById("BillToEmail").value;
+  
     this.setState({
+      ShipmentNumber: ShipmentNumber,
+        CustomerName: CustomerName,
+        TotalCharge: TotalCharge,
+        ShipDate: ShipDate,
+        DeliveryDate: DeliveryDate,
+        charges: this.state.charges,
+      origin: {
+        address: {
+          CompanyName: OriginCompanyName,
+          Address1: OriginAddress1,
+          Address2: OriginAddress2,
+          City: OriginCity,
+          StateCode: OriginState,
+          PostalCode: OriginPostalCode,
+          Country: OriginCountry
+        },
+        Contact:{
+          FirstName: OriginContactFirstName,
+          LastName: OriginContactLastName,
+          Phone: OriginContactPhone,
+          Email: OriginContactEmail
+        },
+        referenceNumbers: [...this.state.origin.referenceNumbers]
+      },
       destination:{
         address: {
           CompanyName: DestinationCompanyName,
@@ -138,27 +160,7 @@ formSubmit(event) {
           Email: DestinationEmail
         }, 
         referenceNumbers: this.state.destination.referenceNumbers
-      }
-    })
-
-
-
-    // BillTo
-
-    let BillToCompanyName = document.getElementById("BillToCompanyName").value,
-    BillToAddress1 = document.getElementById("BillToAddress1").value,
-    BillToAddress2 = document.getElementById("BillToAddress2").value,
-    BillToCity = document.getElementById("BillToCity").value,
-    BillToStateCode = document.getElementById("BillToStateCode").value,
-    BillToPostalCode =  document.getElementById("BillToPostalCode").value,
-    BillToCountry = document.getElementById("BillToCountry").value,
-    BillToFirstName = document.getElementById("BillToFirstName").value,
-    BillToLastName = document.getElementById("BillToLastName").value,
-    BillToPhone = document.getElementById("BillToPhone").value,
-    BillToEmail = document.getElementById("BillToEmail").value;
-
-
-    this.setState({
+      },   
       billTo:{
         address:{
           companyName: BillToCompanyName,
@@ -177,56 +179,67 @@ formSubmit(event) {
         },
         referenceNumbers: [...this.state.billTo.referenceNumbers]
       }
-    })
+     
+    });
+    
+
+
 
     console.log("CURRENT STATE: ");
     console.log(this.state);
 
     let JSONObj = JSON.stringify(this.state);
 
-    console.log(JSONObj);
 
+
+    console.log(JSONObj);
+//     if (this.state.isError != true){
+//       fetch('http://localhost:3001/api/v1/sendData', {
+//         method: 'POST',
+//         headers: {
+//           'Access-Control-Allow-Origin': '*',
+// 'Access-Control-Allow-Methods': 'POST,GET,PUT,DELETE',
+// 'Access-Control-Allow-Headers': 'Authorization, Lang',
+//           'JSON': JSONObj
+//         },
+//         body: JSONObj
+//       }).then(function(data){
+//         console.log('Request success: ', data);
+//       }).catch(function(error){
+//         console.log('Request Failed: ', error);
+//       })
+
+//     }
 };
 
 
 
-handleNewItem(event) {
 
-  console.log("ADD NEW ITEM");
+handleNewCharge(event) {
 
-
-      let description = document.getElementById("itemDescription").value,
+      let ChargesCode = document.getElementById("ChargesCode").value,
+      // ChargesDescription = document.getElementById("ChargesDescription").value,
+      ChargesAmount = document.getElementById("ChargesAmount").value,
+      description = document.getElementById("itemDescription").value,
       length = document.getElementById("itemLengthInInches").value,
-      height = document.getElementById("itemwidthInInches").value,
-      width = document.getElementById("itemHeightInInches").value,
+      height = document.getElementById("itemHeightInInches").value,
+      width = document.getElementById("itemwidthInInches").value,
       freightClass =document.getElementById("freightClass").value,
       totalWeight =document.getElementById("totalWeightInPounds").value,
       pieces =document.getElementById("pieces").value,
       pallets =document.getElementById("pallets").value,
       isHazardous = document.getElementById("isHazardous").value;
 
-let item = {description, length, width, height, freightClass, totalWeight, pieces,pallets, isHazardous};
+
+      if(isNaN(ChargesAmount) || isNaN(pieces) || isNaN(pallets) || isNaN(totalWeight)){
+        this.setState({isError: true})
+      } else {
+        let charge = {ChargesCode, ChargesAmount, description, length, height, width, freightClass, totalWeight,pieces,pallets,isHazardous};
 
 
-this.setState({items:[...this.state.items, item]});
-
-
-  
-};
-
-handleNewCharge(event) {
-
-  console.log("ADD NEW ITEM");
-
-
-      let ChargesCode = document.getElementById("ChargesCode").value,
-      ChargesDescription = document.getElementById("ChargesDescription").value,
-      ChargesAmount = document.getElementById("ChargesAmount").value;
-
-let charge = {ChargesCode, ChargesDescription, ChargesAmount};
-
-
-this.setState({charges:[...this.state.charges, charge]});
+        this.setState({charges:[...this.state.charges, charge]});
+        this.setState({isError:false});
+      }
 
   
 };
@@ -241,7 +254,9 @@ handleNewBillToReference(event){
       let refObject = {BillToReferenceCode, BillToReferenceDescription, BillToReferenceValue};
 
 
-      this.setState({billTo: 
+      this.setState(
+        {...this.state,
+          billTo: 
         {
             address: {...this.state.billTo.address},
             contact: {...this.state.billTo.contact}, 
@@ -278,11 +293,6 @@ handleNewOriginReference(event){
       ReferenceDescription = document.getElementById("OriginReferenceNumberDescription").value,
       ReferenceValue = document.getElementById("OriginReferenceNumberValue").value;
 
-
-      console.log(ReferenceCode);
-      console.log(ReferenceDescription);
-      console.log(ReferenceValue);
-
       let refObject = {ReferenceCode, ReferenceDescription, ReferenceValue};
 
 
@@ -301,27 +311,12 @@ handleNewOriginReference(event){
 }
 
 
-// handleAlertDismiss(event) {
-//   this.setState({alertVisible: false});
-// }
-
-// handleAlertShow(event) {
-//   this.setState({alertVisible: true});
-// }
-
 handleNewDestinationReference(event){
   let DestinationReferenceNumberCode = document.getElementById("DestinationReferenceNumberCode").value,
   DestinationReferenceNumberDescription = document.getElementById("DestinationReferenceNumberDescription").value,
   DestinationReferenceNumberValue = document.getElementById("DestinationReferenceNumberValue").value;
 
-
-      console.log(DestinationReferenceNumberCode);
-      console.log(DestinationReferenceNumberDescription);
-      console.log(DestinationReferenceNumberValue);
-
       let refObject = {DestinationReferenceNumberCode, DestinationReferenceNumberDescription, DestinationReferenceNumberValue};
-
-
       this.setState({destination: 
         {
             address: {...this.state.destination.address},
@@ -332,14 +327,8 @@ handleNewDestinationReference(event){
               ] 
         } 
           });
-
-      console.log(this.state);
 }
 handleNewAccessorials(event) {
-
-  console.log("ADD NEW ITEM");
-
-
       let AccessorialDirection = document.getElementById("AccessorialDirection").value,
       AccessorialDescription = document.getElementById("AccessorialDescription").value,
       AccessorialAmount = document.getElementById("AccessorialAmount").value,
@@ -379,8 +368,18 @@ this.setState({accessorials:[...this.state.accessorials, accessorial]});
 <br/>
 
 <PanelGroup>
-        <Panel collapsible header="Items" eventKey="1">  
-        <label >Description</label>
+
+
+ <Panel collapsible header="Charges" eventKey="2">     
+
+     <label>Code</label>
+     <input type="text" id="ChargesCode" name="ChargesCode" placeholder="Direction"/>
+
+ 
+     <label >Amount</label>
+     <input type="text" id="ChargesAmount" name="ChargesAmount" placeholder="Amount"/>
+
+     <label >Description</label>
      <input type="textarea" id="itemDescription" name="itemDescription" placeholder="Item Description"/>
 
      <label >Item Length in Inches</label>
@@ -409,14 +408,19 @@ this.setState({accessorials:[...this.state.accessorials, accessorial]});
          <option value="true">True</option>
          <option value="false">False</option>
      </select>
-     <button style={{"color":"white", "backgroundColor": "green"}} onClick={() => this.handleNewItem(this)}>Add Item</button>
+      <br/>
+     <button style={{"color":"white", "backgroundColor": "green", "fontSize": "25px"}} onClick={() => this.handleNewCharge(this)}>+</button>
  
- {this.state.items.length > 0 ?
+
+ {this.state.charges.length > 0 ?
  <div>
-      <h4>Items:</h4>
+      <h4>Charges:</h4>
       <table>
       <thead>
       <tr>
+      <th>Code</th>
+      <th>Description</th>
+      <th>Amount</th>
       <th>Description</th>
       <th>Length</th>
       <th>Width</th>
@@ -429,10 +433,13 @@ this.setState({accessorials:[...this.state.accessorials, accessorial]});
       </tr>
       </thead>
       <tbody>
-      {this.state.items.map(item => { 
+      {this.state.charges.map(item => { 
         return(
         <tr>
-          <td>{item.itemDescription}</td>
+          <td>{item.ChargesCode}</td>
+        <td>{item.ChargesDescription}</td>
+        <td>{item.ChargesAmount}</td>
+        <td>{item.itemDescription}</td>
         <td>{item.description}</td>
         <td>{item.length}</td>
         <td>{item.width}</td>
@@ -450,52 +457,9 @@ this.setState({accessorials:[...this.state.accessorials, accessorial]});
     : <p></p>
  }
  </Panel>
-
-
- <Panel collapsible header="Charges" eventKey="3">     
-
-     <label>Code</label>
-     <input type="text" id="ChargesCode" name="ChargesCode" placeholder="Direction"/>
-
-     <label>Description</label>
-     <input type="text" id="ChargesDescription" name="ChargesDescription" placeholder="Accessorial Description"/>
- 
-     <label >Amount</label>
-     <input type="text" id="ChargesAmount" name="ChargesAmount" placeholder="Amount"/>
-
-      <br/>
-     <button style={{"color":"white", "backgroundColor": "green", "fontSize": "25px"}} onClick={() => this.handleNewCharge(this)}>+</button>
- 
-
- {this.state.charges.length > 0 ?
- <div>
-      <h4>Charges:</h4>
-      <table>
-      <thead>
-      <tr>
-      <th>Code</th>
-      <th>Description</th>
-      <th>Amount</th>
-      </tr>
-      </thead>
-      <tbody>
-      {this.state.charges.map(item => { 
-        return(
-        <tr>
-          <td>{item.ChargesCode}</td>
-        <td>{item.ChargesDescription}</td>
-        <td>{item.ChargesAmount}</td>
-        </tr>);
-      })}
-      </tbody>
-      </table>
-      </div>
-    : <p></p>
- }
- </Panel>
       
 
- <Panel collapsible header="Accessorials" eventKey="2">     
+ <Panel collapsible header="Accessorials" eventKey="3">     
  
     <label >Code</label>
      <input type="text" id="AccessorialCode" name="code" placeholder="Code"/>
