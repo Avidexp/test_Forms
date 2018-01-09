@@ -82,21 +82,8 @@ formSubmit(event) {
     DestinationPhone = document.getElementById("DestinationPhone").value,
     DestinationEmail = document.getElementById("DestinationEmail").value;
 
-  // =============================
-  // Error Handling
-  // =============================
 
-    // if(isNaN(TotalCharge)){
-    //   this.setState({
-    //     isError: true
-    //   });
-    // }else {
-    //   this.setState({
-        
-    //   });
-  
-
-      // BillTo
+    // Bill To
 
       let BillToCompanyName = document.getElementById("BillToCompanyName").value,
       BillToAddress1 = document.getElementById("BillToAddress1").value,
@@ -201,7 +188,10 @@ formSubmit(event) {
     });
     console.log("CURRENT STATE: ");
     console.log(this.state);
-    let JSONObj = JSON.stringify(this.state);
+    let obj = this.state;
+    delete obj['isError'];
+    let JSONObj = JSON.stringify(obj);
+
     console.log(JSONObj);
   }
     
@@ -227,14 +217,16 @@ handleNewCharge(event) {
       isHazardous = document.getElementById("isHazardous").value;
 
 
-      if(isNaN(ChargesAmount) || isNaN(pieces) || isNaN(pallets) || isNaN(totalWeight)){
+      if(isNaN(ChargesAmount) || isNaN(pieces) || isNaN(pallets) || isNaN(totalWeight) || isNaN(length) || isNaN(width) || isNaN(height) || ChargesAmount == '' || 
+        pieces == "" || pallets == "" || totalWeight == "" || length == "" || width == "" || height == "" || totalWeight == "" ){
         this.setState({
-          isError: true,
-        errorLocation: [...this.state.errorLocation, "Charges"]
+          isError: true
       });
+      document.getElementById("ChargesError").innerHTML = "<h3 style='color: red;'> Error: Make sure Amount, Pieces, Pallets, height width, length, and Weight are all filled in and are numbers.</h3>";
       } else {
         let charge = {ChargesCode, ChargesAmount, description, length, height, width, freightClass, totalWeight,pieces,pallets,isHazardous};
 
+        document.getElementById("ChargesError").innerHTML = "";
 
         this.setState({charges:[...this.state.charges, charge]});
         this.setState({isError:false});
@@ -336,10 +328,17 @@ handleNewAccessorials(event) {
 
 let accessorial = {AccessorialCode, AccessorialDirection, AccessorialDescription, AccessorialAmount};
 
+  if(isNaN(AccessorialAmount) ){
+    document.getElementById("AccessorialsError").innerHTML = " <h3 style='color: red;'> Error: Amount must be a number.</h3>";
 
-this.setState({accessorials:[...this.state.accessorials, accessorial]});
+  }else  if (AccessorialAmount == "" || AccessorialDescription == "" || AccessorialDirection == "" || AccessorialCode == ""){
+    document.getElementById("AccessorialsError").innerHTML = " <h3 style='color: red;'> Error: All Fields must be filled out.</h3>";
 
-  
+  } else {
+    this.setState({accessorials:[...this.state.accessorials, accessorial]});
+
+  }
+
 };
   render() {
     
