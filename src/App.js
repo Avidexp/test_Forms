@@ -41,7 +41,7 @@ componentWillReceiveProps(props){
   //console.log(props);
 }
 componentWillUpdate(props){
-  //console.log(props);
+
 }
 
 formSubmit(event) {
@@ -50,14 +50,6 @@ formSubmit(event) {
     TotalCharge = document.getElementById("totalCharge").value,
     ShipDate = document.getElementById("shipDate").value,
     DeliveryDate = document.getElementById("deliveryDate").value;
-
-    // Date Conversion
-    ShipDate = new Date(ShipDate);
-    DeliveryDate = new Date(DeliveryDate);
-    ShipDate = ShipDate.toISOString();
-    DeliveryDate = DeliveryDate.toISOString();
-
-  
 
     //Origin
 
@@ -118,6 +110,32 @@ formSubmit(event) {
       BillToPhone = document.getElementById("BillToPhone").value,
       BillToEmail = document.getElementById("BillToEmail").value;
   
+
+ // Date Conversion
+ if(ShipDate != null && DeliveryDate!= null && ShipDate.length > 1 && DeliveryDate.length > 1){
+  ShipDate = new Date(ShipDate).toISOString();
+  DeliveryDate = new Date(DeliveryDate).toISOString();
+  document.getElementById("DateError").innerHTML = "<h2>ERROR GONE</h2>";
+} 
+
+  if( isNaN(ShipmentNumber) || isNaN(TotalCharge) || TotalCharge == '' || ShipmentNumber == ''){
+    this.setState({
+      isError:true
+    }); 
+    document.getElementById("DateError").innerHTML = "<h3 style='color: red;'> Error: Please make sure you have filled out Shipment Number, and Total Charge, and that they are both Numbers.</h3>";
+    console.log("ERROR IN FORM SUBMISSION");
+  }  else if(ShipDate == null || DeliveryDate == null || ShipDate.length < 1 || DeliveryDate.length < 1 || ShipDate == "" || DeliveryDate == ""){
+      this.setState({
+        isError:true
+      });
+      document.getElementById("DateError").innerHTML ="<h3 style='color: red;'> Error: Please check your dates</h3>";
+    }
+  
+  else {
+    document.getElementById("DateError").innerHTML ="";
+    ShipDate = new Date(ShipDate).toISOString();
+    DeliveryDate = new Date(DeliveryDate).toISOString();
+    
     this.setState({
       ShipmentNumber: ShipmentNumber,
         CustomerName: CustomerName,
@@ -181,35 +199,13 @@ formSubmit(event) {
       }
      
     });
-    
-
-
-
     console.log("CURRENT STATE: ");
     console.log(this.state);
-
     let JSONObj = JSON.stringify(this.state);
-
-
-
     console.log(JSONObj);
-//     if (this.state.isError != true){
-//       fetch('http://localhost:3001/api/v1/sendData', {
-//         method: 'POST',
-//         headers: {
-//           'Access-Control-Allow-Origin': '*',
-// 'Access-Control-Allow-Methods': 'POST,GET,PUT,DELETE',
-// 'Access-Control-Allow-Headers': 'Authorization, Lang',
-//           'JSON': JSONObj
-//         },
-//         body: JSONObj
-//       }).then(function(data){
-//         console.log('Request success: ', data);
-//       }).catch(function(error){
-//         console.log('Request Failed: ', error);
-//       })
+  }
+    
 
-//     }
 };
 
 
@@ -232,7 +228,10 @@ handleNewCharge(event) {
 
 
       if(isNaN(ChargesAmount) || isNaN(pieces) || isNaN(pallets) || isNaN(totalWeight)){
-        this.setState({isError: true})
+        this.setState({
+          isError: true,
+        errorLocation: [...this.state.errorLocation, "Charges"]
+      });
       } else {
         let charge = {ChargesCode, ChargesAmount, description, length, height, width, freightClass, totalWeight,pieces,pallets,isHazardous};
 
@@ -367,6 +366,7 @@ this.setState({accessorials:[...this.state.accessorials, accessorial]});
 <input type="date" name="deliveryDate" id="deliveryDate"/>
 <br/>
 
+<div id="DateError" style={{'color': 'black'}}></div>
 <PanelGroup>
 
 
@@ -411,7 +411,7 @@ this.setState({accessorials:[...this.state.accessorials, accessorial]});
       <br/>
      <button style={{"color":"white", "backgroundColor": "green", "fontSize": "25px"}} onClick={() => this.handleNewCharge(this)}>+</button>
  
-
+<div id="ChargesError"></div>
  {this.state.charges.length > 0 ?
  <div>
       <h4>Charges:</h4>
@@ -474,7 +474,7 @@ this.setState({accessorials:[...this.state.accessorials, accessorial]});
      <input type="text" id="AccessorialAmount" name="Amount" placeholder="Amount"/>
 
       <br/>
-
+      <div id="AccessorialsError"></div>
 
  {this.state.accessorials.length > 0 ?
  <div>
@@ -562,7 +562,7 @@ this.setState({accessorials:[...this.state.accessorials, accessorial]});
       <input type="text" id="OriginReferenceNumberValue" name="OriginReferenceNumberValue" placeholder="Value"/>
 
 
-
+      <div id="OriginError"></div>
       {this.state.origin.referenceNumbers.length > 0 ?
  <div>
       <h4>Reference Numbers:</h4>
@@ -645,7 +645,7 @@ this.setState({accessorials:[...this.state.accessorials, accessorial]});
       <label >Value</label>
       <input type="text" id="DestinationReferenceNumberValue" name="DestinationReferenceNumberValue" placeholder="Value"/>
 
-
+      <div id="DestinationError"></div>
       {this.state.destination.referenceNumbers.length > 0 ?
  <div>
       <h4>Reference Numbers:</h4>
@@ -728,7 +728,8 @@ this.setState({accessorials:[...this.state.accessorials, accessorial]});
       <input type="text" id="BillToReferenceValue" name="iderenceNumberValue" placeholder="Value"/>
 
       <button style={{"color":"white", "backgroundColor": "green", "fontSize": "20px"}} onClick={() => this.handleNewBillToReference(this)}>+</button>
-    
+      
+      <div id="billToError"></div>
       {this.state.billTo.referenceNumbers.length > 0 ?
  <div>
       <h4>Reference Numbers:</h4>
@@ -771,7 +772,7 @@ this.setState({accessorials:[...this.state.accessorials, accessorial]});
       <input type="text" id="AdditionalReferenceValue" name="iderenceNumberValue" placeholder="Value"/>
 
       <button style={{"color":"white", "backgroundColor": "green", "fontSize": "20px"}} onClick={() => this.handleMainReference(this)}>+</button>
-    
+    <div id="ReferenceError"></div>
       {this.state.referenceNumbers.length > 0 ?
  <div>
       <h4>Reference Numbers:</h4>
@@ -806,22 +807,7 @@ this.setState({accessorials:[...this.state.accessorials, accessorial]});
 
 </div>
 {/* <div style={{"float": "left"}}>  <Button onClick={this.handleAlertShow(this)}>Show Alert</Button> */}
-
-{/* {alert == true ?
-  
-        <Alert bsStyle="info" onDismiss={() => this.handleAlertDismiss(this)}>
-          <h4>Oh snap! You got an error!</h4>
-          <p>Change this and that and try again. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum.</p>
-          <p>
-            <Button bsStyle="danger">Take this action</Button>
-            <span> or </span>
-            <Button onClick={() => this.handleAlertDismiss(this)}>Hide Alert</Button>
-          </p>
-        </Alert>
-       : <p></p>
-    } */}
-
-
+ {this.state.isError == true ? <Alert type="warning"><h2>Please fill out all fields</h2></Alert> : <p></p>}
 
       </div>
     );
