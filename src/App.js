@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import {PanelGroup, Panel, Button, Alert} from "react-bootstrap";
+import {PanelGroup, Panel, Button, Alert, Col} from "react-bootstrap";
 import axios from 'axios';
 
 
@@ -336,7 +336,7 @@ let accessorial = {AccessorialCode, AccessorialDirection, AccessorialDescription
 
   } else {
     this.setState({accessorials:[...this.state.accessorials, accessorial]});
-
+    document.getElementById("AccessorialsError").innerHTML = "";
   }
 
 };
@@ -349,60 +349,71 @@ let accessorial = {AccessorialCode, AccessorialDirection, AccessorialDescription
         </header>
         <div>
 
-        <label >Customer Name</label> &nbsp;
+        <label >Customer Name: </label> &nbsp;
         <input type="text" id="customerName" name="customerName" placeholder="Customer Name"/>&nbsp;&nbsp;
-
-        <label >Shipment Number</label>&nbsp;
+        <label >Shipment Number: </label>&nbsp;
         <input type="text" id="shipmentNumber" name="shipmentNumber" placeholder="Shipment Number"/> &nbsp; <br/> 
 
-        <label>Total Charge</label>
+        <br/>
+
+        <label>Total Charge: </label>&nbsp;
         <input type="text" id="totalCharge" name="totalCharge" placeholder="Total Charge"/>
 
-        <label >Ship Date</label>
+      <Col mdPull={6}>
+        <label >Ship Date: </label>&nbsp;
 <input type="date" name="shipDate" id="shipDate"/>
 
-<label>Delivery Date</label>
+<label>Delivery Date: </label>&nbsp;
 <input type="date" name="deliveryDate" id="deliveryDate"/>
 <br/>
-
+</Col>
 <div id="DateError" style={{'color': 'black'}}></div>
 <PanelGroup>
 
 
  <Panel collapsible header="Charges" eventKey="2">     
 
-     <label>Code</label>
-     <input type="text" id="ChargesCode" name="ChargesCode" placeholder="Direction"/>
+     <label>Code: </label>&nbsp;
+     <input type="text" id="ChargesCode" name="ChargesCode" placeholder="Direction"/>&nbsp;&nbsp;
 
  
-     <label >Amount</label>
+     <label >Amount: </label>&nbsp;
      <input type="text" id="ChargesAmount" name="ChargesAmount" placeholder="Amount"/>
 
-     <label >Description</label>
+      <Col md={12} lg={12}>
+     <label >Description: </label>
      <input type="textarea" id="itemDescription" name="itemDescription" placeholder="Item Description"/>
+      </Col>
+      <br/>
+      <Col xs={4} md={4} lg={6} >
+     <label >Item Length in Inches: </label>&nbsp;
+     <input type="text" id="itemLengthInInches" name="itemLengthInInches" placeholder="Item Length in inches"/>&nbsp;&nbsp;
 
-     <label >Item Length in Inches</label>
-     <input type="text" id="itemLengthInInches" name="itemLengthInInches" placeholder="Item Length in inches"/>
-
-     <label>Item width in Inches</label>
+     <label>Item width in Inches: </label>
      <input type="text" id="itemwidthInInches" name="itemwidthInInches" placeholder="Item width In Inches"/>
- 
-     <label >Item Height In Inches</label>
+    </Col>
+     <br/>
+     <Col xs={4} md={4} lg={6} >
+     <label >Item Height In Inches: </label>
      <input type="text" id="itemHeightInInches" name="itemHeightInInches" placeholder="Item Height In Inches"/>
- 
-     <label>Freight Class</label>
+     &nbsp;&nbsp;
+     <label>Freight Class: </label>
      <input type="text" id="freightClass" name="freightClass" placeholder="Freight Class"/>
+     </Col>
 
-     <label>Total Weight In Pounds</label>
+     <Col xs={4} md={4} lg={6} >
+     <label>Total Weight In Pounds: </label>
      <input type="text" id="totalWeightInPounds" name="totalWeightInPounds" placeholder="Total Weight In Pounds"/>
-
-     <label>Pieces</label>
+     &nbsp;&nbsp;&nbsp;&nbsp;
+     <label>Pieces: </label>
      <input type="text" id="pieces" name="pieces" placeholder="Pieces"/>
- 
-     <label >Pallets</label>
+      </Col>
+
+      <Col xs={4} md={4} lg={6} >
+     <label >Pallets: </label>&nbsp;&nbsp;
      <input type="text" id="pallets" name="pallets" placeholder="Pallets"/>
- 
-     <label>Is hazardous</label>
+      </Col>
+     <label>Is hazardous: </label>
      <select id="isHazardous">
          <option value="true">True</option>
          <option value="false">False</option>
@@ -460,16 +471,16 @@ let accessorial = {AccessorialCode, AccessorialDirection, AccessorialDescription
 
  <Panel collapsible header="Accessorials" eventKey="3">     
  
-    <label >Code</label>
-     <input type="text" id="AccessorialCode" name="code" placeholder="Code"/>
+    <label >Code: </label>&nbsp;&nbsp;
+     <input type="text" id="AccessorialCode" name="code" placeholder="Code"/>&nbsp;&nbsp;&nbsp;&nbsp;
 
-     <label>Direction</label>
+     <label>Direction: </label>&nbsp;&nbsp;
      <input type="text" id="AccessorialDirection" name="AccessorialDirection" placeholder="Direction"/>
-
-     <label>Description</label>
-     <input type="text" id="AccessorialDescription" name="AccessorialDescription" placeholder="Accessorial Description"/>
+      <br/>
+     <label>Description: </label>&nbsp;&nbsp;
+     <input type="text" id="AccessorialDescription" name="AccessorialDescription" placeholder="Accessorial Description"/>&nbsp;&nbsp;&nbsp;&nbsp;
  
-     <label >Amount</label>
+     <label >Amount: </label>&nbsp;&nbsp;
      <input type="text" id="AccessorialAmount" name="Amount" placeholder="Amount"/>
 
       <br/>
@@ -513,51 +524,54 @@ let accessorial = {AccessorialCode, AccessorialDirection, AccessorialDescription
      <br/>
      <h3>Address</h3><br/>
      <br/>
-     <label >Company Name</label>
+     <Col md={12} lg={12}>
+     <label >Company Name: </label>
      <input type="text" id="OriginCompanyName" name="CompanyName" placeholder="Company Name"/>
+      </Col>
 
-     <label >Address 1</label>
-     <input type="text" id="OriginAddress1" name="Address1" placeholder="Address 1"/>
+     <label >Address 1: </label>&nbsp;&nbsp;
+     <input type="text" id="OriginAddress1" name="Address1" placeholder="Address 1"/>&nbsp;&nbsp;&nbsp;&nbsp;
 
-     <label >Address 2</label>
-     <input type="text" id="OriginAddress2" name="Address2" placeholder="Address 2"/>
+     <label >Address 2: </label>&nbsp;&nbsp;
+     <input type="text" id="OriginAddress2" name="Address2" placeholder="Address 2"/> <br/>&nbsp;&nbsp;&nbsp;&nbsp;
  
-     <label >City</label>
-     <input type="text" id="OriginCity" name="City" placeholder="City"/>
+     <label >City: </label>&nbsp;&nbsp;
+     <input type="text" id="OriginCity" name="City" placeholder="City"/>&nbsp;&nbsp;&nbsp;&nbsp;
    
-     <label >State Code</label>
-     <input type="text" id="OriginStateCode" name="StateCode" placeholder="State Code"/>
+     <label >State Code: </label>&nbsp;&nbsp;
+     <input type="text" id="OriginStateCode" name="StateCode" placeholder="State Code"/> <br/>
 
-     <label>Postal Code</label> 
-     <input type="text" id="OriginPostalCode" name="PostalCode" placeholder="Postal Code"/>
+     <label>Postal Code: </label> &nbsp;&nbsp;
+     <input type="text" id="OriginPostalCode" name="PostalCode" placeholder="Postal Code"/>&nbsp;&nbsp;&nbsp;&nbsp;
  
-     <label >Country</label>
-     <input type="text" id="OriginCountry" name="Country" placeholder="Country"/>
+     <label >Country: </label>&nbsp;&nbsp;
+     <input type="text" id="OriginCountry" name="Country" placeholder="Country"/>&nbsp;&nbsp;&nbsp;&nbsp;
 
-
+      <hr/>
       <br/>
       <h3>Contact </h3>
-      <label >FirstName</label>
-     <input type="text" id="OriginContactFirstName" name="FirstName" placeholder="First Name"/>
+      <br/>
+      <label >FirstName: </label>&nbsp;&nbsp;
+     <input type="text" id="OriginContactFirstName" name="FirstName" placeholder="First Name"/>&nbsp;&nbsp;&nbsp;&nbsp;
 
-     <label >Last Name</label>
-     <input type="text" id="OriginContactLastName" name="LastName" placeholder="Last Name"/>
+     <label >Last Name: </label>
+     <input type="text" id="OriginContactLastName" name="LastName" placeholder="Last Name"/> <br/>
 
-     <label >Phone</label>
-     <input type="text" id="OriginContactPhone" name="Phone" placeholder="Phone"/>
+     <label >Phone: </label>&nbsp;&nbsp;
+     <input type="text" id="OriginContactPhone" name="Phone" placeholder="Phone"/>&nbsp;&nbsp;&nbsp;&nbsp;
  
-     <label >Email</label>
+     <label >Email: </label>
      <input type="text" id="OriginContactEmail" name="Email" placeholder="Email"/>
      <br/>
      <Panel header="Reference Numbers" bsStyle="info">
 
-     <label >Code</label>
-      <input type="text" id="OriginReferenceNumberCode" name="OriginReferenceNumberCode" placeholder="Code"/>
+     <label >Code: </label>&nbsp;&nbsp;
+      <input type="text" id="OriginReferenceNumberCode" name="OriginReferenceNumberCode" placeholder="Code"/>&nbsp;&nbsp;&nbsp;&nbsp;
  
-      <label>Description</label>
-      <input type="text" id="OriginReferenceNumberDescription" name="iderenceNumbersDescription" placeholder="Description"/>
+      <label>Description: </label>&nbsp;&nbsp;
+      <input type="text" id="OriginReferenceNumberDescription" name="iderenceNumbersDescription" placeholder="Description"/> <br/>
  
-      <label >Value</label>
+      <label >Value: </label>
       <input type="text" id="OriginReferenceNumberValue" name="OriginReferenceNumberValue" placeholder="Value"/>
 
 
@@ -597,51 +611,52 @@ let accessorial = {AccessorialCode, AccessorialDirection, AccessorialDescription
      
      <h3>Address</h3><br/>
      <br/>
-     <label >Company Name</label>
+     <Col md={12} lg={12}>
+     <label >Company Name: </label>&nbsp;&nbsp;
      <input type="text" id="Destination_CompanyName" name="DestinationCompanyName" placeholder="Company Name"/>
+     </Col>
+     <label >Address 1: </label>&nbsp;&nbsp;
+     <input type="text" id="Destination_Address1" name="DestinationAddress1" placeholder="Address 1"/>&nbsp;&nbsp;&nbsp;&nbsp;
 
-     <label >Address 1</label>
-     <input type="text" id="Destination_Address1" name="DestinationAddress1" placeholder="Address 1"/>
-
-     <label >Address 2</label>
-     <input type="text" id="Destination_Address2" name="DestinationAddress2" placeholder="Address 2"/>
+     <label >Address 2: </label>&nbsp;&nbsp;
+     <input type="text" id="Destination_Address2" name="DestinationAddress2" placeholder="Address 2"/><br/>
  
-     <label >City</label>
-     <input type="text" id="Destination_City" name="DestinationCity" placeholder="City"/>
+     <label >City: </label>&nbsp;&nbsp;
+     <input type="text" id="Destination_City" name="DestinationCity" placeholder="City"/>&nbsp;&nbsp;&nbsp;&nbsp;
    
-     <label >State Code</label>
-     <input type="text" id="Destination_StateCode" name="DestinationStateCode" placeholder="State Code"/>
+     <label >State Code: </label>&nbsp;&nbsp;
+     <input type="text" id="Destination_StateCode" name="DestinationStateCode" placeholder="State Code"/> <br/>
 
-     <label>Postal Code</label> 
-     <input type="text" id="Destination_PostalCode" name="DestinationPostalCode" placeholder="Postal Code"/>
+     <label>Postal Code: </label> &nbsp;&nbsp;
+     <input type="text" id="Destination_PostalCode" name="DestinationPostalCode" placeholder="Postal Code"/>&nbsp;&nbsp;&nbsp;&nbsp;
  
-     <label >Country</label>
-     <input type="text" id="Destination_Country" name="DestinationCountry" placeholder="Country"/>
+     <label >Country: </label>&nbsp;&nbsp;
+     <input type="text" id="Destination_Country" name="DestinationCountry" placeholder="Country"/>&nbsp;&nbsp;&nbsp;&nbsp;
 
 
       <br/>
       <h3>Contact </h3>
-      <label >FirstName</label>
-     <input type="text" id="DestinationFirstName" name="DestinationFirstName" placeholder="First Name"/>
+      <label >FirstName: </label>&nbsp;&nbsp;
+     <input type="text" id="DestinationFirstName" name="DestinationFirstName" placeholder="First Name"/>&nbsp;&nbsp;&nbsp;&nbsp;
 
-     <label >Last Name</label>
-     <input type="text" id="DestinationLastName" name="DestinationLastName" placeholder="Last Name"/>
+     <label >Last Name: </label>
+     <input type="text" id="DestinationLastName" name="DestinationLastName" placeholder="Last Name"/> <br/>
 
-     <label >Phone</label>
-     <input type="text" id="DestinationPhone" name="DestinationPhone" placeholder="Phone"/>
+     <label >Phone: </label>&nbsp;&nbsp;
+     <input type="text" id="DestinationPhone" name="DestinationPhone" placeholder="Phone"/>&nbsp;&nbsp;&nbsp;&nbsp;
  
-     <label >Email</label>
+     <label >Email: </label>
      <input type="text" id="DestinationEmail" name="DestinationEmail" placeholder="Email"/>
      <br/>
      <Panel header="Reference Numbers" bsStyle="info">
 
-     <label >Code</label>
-      <input type="text" id="DestinationReferenceNumberCode" name="DestinationReferenceNumberCode" placeholder="Code"/>
+     <label >Code: </label>&nbsp;&nbsp;
+      <input type="text" id="DestinationReferenceNumberCode" name="DestinationReferenceNumberCode" placeholder="Code"/>&nbsp;&nbsp;&nbsp;&nbsp;
  
-      <label>Description</label>
-      <input type="text" id="DestinationReferenceNumberDescription" name="DestinationReferenceNumberDescription" placeholder="Description"/>
+      <label>Description: </label>&nbsp;&nbsp;
+      <input type="text" id="DestinationReferenceNumberDescription" name="DestinationReferenceNumberDescription" placeholder="Description"/> <br/>
  
-      <label >Value</label>
+      <label >Value: </label> &nbsp;&nbsp;
       <input type="text" id="DestinationReferenceNumberValue" name="DestinationReferenceNumberValue" placeholder="Value"/>
 
       <div id="DestinationError"></div>
@@ -679,53 +694,54 @@ let accessorial = {AccessorialCode, AccessorialDirection, AccessorialDescription
      
     <h3>Address</h3><br/>
      <br/>
-     <label >Company Name</label>
+     <Col md={12} lg={12}>
+     <label >Company Name: </label>
      <input type="text" id="BillToCompanyName" name="CompanyName" placeholder="Company Name"/>
+</Col>
+     <label >Address 1: </label>&nbsp;&nbsp;
+     <input type="text" id="BillToAddress1" name="Address1" placeholder="Address 1"/>&nbsp;&nbsp;&nbsp;&nbsp;
 
-     <label >Address 1</label>
-     <input type="text" id="BillToAddress1" name="Address1" placeholder="Address 1"/>
-
-     <label >Address 2</label>
-     <input type="text" id="BillToAddress2" name="Address2" placeholder="Address 2"/>
+     <label >Address 2: </label>&nbsp;&nbsp;
+     <input type="text" id="BillToAddress2" name="Address2" placeholder="Address 2"/> <br/>
  
-     <label >City</label>
-     <input type="text" id="BillToCity" name="City" placeholder="City"/>
+     <label >City: </label>&nbsp;&nbsp;
+     <input type="text" id="BillToCity" name="City" placeholder="City"/>&nbsp;&nbsp;&nbsp;&nbsp;
    
-     <label >State Code</label>
-     <input type="text" id="BillToStateCode" name="StateCode" placeholder="State Code"/>
+     <label >State Code: </label>&nbsp;&nbsp;
+     <input type="text" id="BillToStateCode" name="StateCode" placeholder="State Code"/> <br/>
 
-     <label>Postal Code</label> 
-     <input type="text" id="BillToPostalCode" name="PostalCode" placeholder="Postal Code"/>
+     <label>Postal Code: </label> &nbsp;&nbsp;
+     <input type="text" id="BillToPostalCode" name="PostalCode" placeholder="Postal Code"/>&nbsp;&nbsp;&nbsp;&nbsp;
  
-     <label >Country</label>
-     <input type="text" id="BillToCountry" name="Country" placeholder="Country"/>
+     <label >Country: </label>&nbsp;&nbsp;
+     <input type="text" id="BillToCountry" name="Country" placeholder="Country"/>&nbsp;&nbsp;&nbsp;&nbsp;
 
-
+      <hr/>
       <br/>
       <h3>Contact </h3>
-      <label >FirstName</label>
-     <input type="text" id="BillToFirstName" name="FirstName" placeholder="First Name"/>
+      <label >FirstName: </label>&nbsp;&nbsp;
+     <input type="text" id="BillToFirstName" name="FirstName" placeholder="First Name"/>&nbsp;&nbsp;&nbsp;&nbsp;
 
-     <label >Last Name</label>
-     <input type="text" id="BillToLastName" name="LastName" placeholder="Last Name"/>
+     <label >Last Name: </label>&nbsp;&nbsp;
+     <input type="text" id="BillToLastName" name="LastName" placeholder="Last Name"/> <br/>
 
-     <label >Phone</label>
-     <input type="text" id="BillToPhone" name="Phone" placeholder="Phone"/>
+     <label >Phone: </label>&nbsp;&nbsp;
+     <input type="text" id="BillToPhone" name="Phone" placeholder="Phone"/>&nbsp;&nbsp;&nbsp;&nbsp;
  
-     <label >Email</label>
+     <label >Email: </label>&nbsp;&nbsp;
      <input type="text" id="BillToEmail" name="Email" placeholder="Email"/>
      <br/>
      <Panel header="Reference Numbers" bsStyle="info">
 
-     <label >Code</label>
+     <label >Code: </label>&nbsp;&nbsp;
       <input type="text" id="BillToReferenceCode" name="Code" placeholder="Code"/>
  
-      <label>Description</label>
-      <input type="text" id="BillToReferenceDescription" name="iderenceNumbersDescription" placeholder="Description"/>
+      <label>Description: </label>&nbsp;&nbsp;
+      <input type="text" id="BillToReferenceDescription" name="rerenceNumbersDescription" placeholder="Description"/><br/>
  
-      <label >Value</label>
-      <input type="text" id="BillToReferenceValue" name="iderenceNumberValue" placeholder="Value"/>
-
+      <label >Value: </label>&nbsp;&nbsp;
+      <input type="text" id="BillToReferenceValue" name="RerenceNumberValue" placeholder="Value"/>
+      <br/>
       <button style={{"color":"white", "backgroundColor": "green", "fontSize": "20px"}} onClick={() => this.handleNewBillToReference(this)}>+</button>
       
       <div id="billToError"></div>
@@ -761,15 +777,15 @@ let accessorial = {AccessorialCode, AccessorialDirection, AccessorialDescription
       <Panel collapsible header="Additional Reference Numbers" eventKey="6">
       <Panel header="Reference Numbers" bsStyle="info">
 
-     <label >Code</label>
-      <input type="text" id="AdditionalReferenceCode" name="Code" placeholder="Code"/>
+     <label >Code: </label>&nbsp;&nbsp;
+      <input type="text" id="AdditionalReferenceCode" name="Code" placeholder="Code"/>&nbsp;&nbsp;&nbsp;&nbsp;
  
-      <label>Description</label>
-      <input type="text" id="AdditionalReferenceDescription" name="iderenceNumbersDescription" placeholder="Description"/>
+      <label>Description: </label>&nbsp;&nbsp;
+      <input type="text" id="AdditionalReferenceDescription" name="iderenceNumbersDescription" placeholder="Description"/>&nbsp;&nbsp;&nbsp;&nbsp; <br/>
  
-      <label >Value</label>
+      <label >Value: </label>&nbsp;&nbsp;
       <input type="text" id="AdditionalReferenceValue" name="iderenceNumberValue" placeholder="Value"/>
-
+    <br/>
       <button style={{"color":"white", "backgroundColor": "green", "fontSize": "20px"}} onClick={() => this.handleMainReference(this)}>+</button>
     <div id="ReferenceError"></div>
       {this.state.referenceNumbers.length > 0 ?
